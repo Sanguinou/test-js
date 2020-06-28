@@ -32,6 +32,8 @@
     </div>
 
     <script>
+
+        //connection to json
         var KEY = "tasks.json"
         var taskStorage = {
             fetch: function () {
@@ -46,6 +48,8 @@
                 localStorage.setItem(KEY, JSON.stringify(tasks));
             }
         }
+
+        //filter tasks
         var filters = {
             active: function (tasks) {
                 return tasks.filter(function (task) {
