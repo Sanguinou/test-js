@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <title>Tasks</title>
+</head>
+
+<body>
+
+    <div id="app" class="main-box">
+        <input v-model="newTask" v-on:keyup.enter="addTask" placeholder="New task" class="task-input">
+        <ul>
+            <li v-for="task in tasks">
+                <div class="task-item">
+                    <input class="check" type="checkbox" v-model="task.completed" />
+                    <label class="task-title">{{ task.title }}</label>
+                    <button class="remove" v-on:click="removeTask(task)">X</button>
+                </div>
+            </li>
+        </ul>
+        <span class="count">
+            {{ remaining }} {{ remaining | pluralize}} left
+        </span>
+        <span class="count">
+            {{ done }} {{ done | pluralize }} done
+        </span>
+    </div>
+
+    <script>
+        var KEY = "tasks.json"
+        var taskStorage = {
+            fetch: function () {
+                var tasks = JSON.parse(localStorage.getItem(KEY) || "[]");
+                tasks.forEach(function (task, index) {
+                    task.id = index;
+                });
+                taskStorage.uid = tasks.length;
+                return tasks;
+            },
+            save: function (tasks) {
+                localStorage.setItem(KEY, JSON.stringify(tasks));
+            }
+        }
+        var filters = {
+            active: function (tasks) {
+                return tasks.filter(function (task) {
+                    return !task.completed;
+                });
+            },
+            completed: function (tasks) {
+                return tasks.filter(function (task) {
+                    return task.completed
+                })
+            }
+        };
+
+        new Vue({
+            el: '#app',
+            data: {
+                newTask: '',
+                tasks: taskStorage.fetch(),
+            },
+            watch: {
+                tasks: {
+                    handler: function (tasks) {
+                        taskStorage.save(tasks);
+                    },
+                    deep: true
+                }
+            },
+            computed: {
+                remaining: function () {
+                    return filters.active(this.tasks).length;
+                },
+                done: function () {
+                    return filters.completed(this.tasks).length;
+                }
+
+            },
+            filters: {
+                pluralize: function (n) {
+                    return n === 1 ? "task" : "tasks";
+                }
+            },
+            methods: {
+                addTask: function () {
+                    var value = this.newTask && this.newTask.trim();
+                    if (!value) {
+                        return;
+                    }
+                    if (taskStorage.uid > 9) {
+                        return;
+                    }
+                    this.tasks.push({
+                        id: taskStorage.uid++,
+                        title: value,
+                        completed: false
+                    });
+                    this.newTask = "";
+                },
+                removeTask: function (task) {
+                    this.tasks.splice(this.tasks.indexOf(task), 1);
+                },
+
+                doneEdit: function (task) {
+                    if (!this.editedTask) {
+                        return;
+                    }
+                    this.editedTask = null;
+                    task.title = todo.title.trim();
+                    if (!task.title) {
+                        this.removeTask(task);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

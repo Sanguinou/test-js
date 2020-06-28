@@ -1,0 +1,73 @@
+body {
+    background: #e9f8f8;
+}
+
+ul {
+    list-style-type: disc;
+    list-style: none;
+}
+
+li {
+    display: list-item;
+}
+
+.main-box {
+    position: relative;
+    background: #ffffff;
+    border: 1px solid #999999;
+    border-radius: 1%;
+    display: block;
+    font-weight: 250;
+    min-width: 230px;
+    max-width: 530px;
+    margin: 0 auto;
+}
+
+.task-input {
+    width: 100%;
+    font-size: 20px;
+    line-height: 1.4em;
+    box-sizing: border-box;
+    padding: 0 5px;
+    margin: 2px 0;
+}
+
+.check {
+    width: 25px;
+    height: 25px;
+    vertical-align: middle;
+    border: 1px solid #dddddd;
+    outline: none;
+}
+
+.task-title {
+    padding: 15px 15px 15px 60px;
+    line-height: 1.2; 
+    width: 80%;
+    height: 50px;  
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.task-item {
+    margin: 20px 0 ;
+}
+
+.remove {
+    position: absolute;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    color: #cc6969;
+    margin-bottom: 11px;
+    vertical-align: baseline;
+    background: none;
+    border: none;
+}
+
+.count {
+    float: left;
+    text-align: left;
+    color: #666666;
+    margin: 5px;
+}
